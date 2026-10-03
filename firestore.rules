@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Connection test document
+    match /test/{testId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // User profile and subcollections: only the owner can read and write
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /{allSubcollections=**} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Public inquiries / feedback
+    match /inquiries/{inquiryId} {
+      allow create: if true;
+      allow read: if request.auth != null;
+      allow update, delete: if false;
+    }
+
+    // Public verified Women Bus Card verification (ticket examiners / conductors)
+    match /public_bus_cards/{cardId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

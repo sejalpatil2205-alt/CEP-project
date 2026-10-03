@@ -1,0 +1,144 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Registered or guest citizen profile and user preferences stored in Firestore",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email address" },
+        "displayName": { "type": "string", "description": "Citizen full name" },
+        "photoURL": { "type": "string", "description": "Profile picture URL" },
+        "isAnonymous": { "type": "boolean", "description": "Whether session is guest citizen" },
+        "preferredLanguage": { "type": "string", "enum": ["en", "hi"], "description": "Selected interface language (English or Hindi)" },
+        "bookmarks": { "type": "array", "description": "List of bookmarked service IDs" },
+        "savedVehiclesCount": { "type": "number", "description": "Count of registered vehicles" },
+        "state": { "type": "string", "description": "User home state in India" },
+        "phoneNumber": { "type": "string", "description": "Citizen contact phone" },
+        "recentActivity": { "type": "array", "description": "List of last accessed services with timestamps and metadata" },
+        "lastLoginAt": { "type": "string", "description": "ISO timestamp of last login" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of profile creation" },
+        "updatedAt": { "type": "string", "description": "ISO or server timestamp of last update" }
+      },
+      "required": ["uid", "displayName"]
+    },
+    "Vehicle": {
+      "title": "Vehicle",
+      "description": "Citizen vehicle details for FASTag, RC and e-Challan monitoring",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique vehicle record ID" },
+        "vehicleNumber": { "type": "string", "description": "Registration number (e.g. MH12AB1234)" },
+        "vehicleType": { "type": "string", "description": "Type of vehicle (Car, Bike, Commercial)" },
+        "nickname": { "type": "string", "description": "User friendly nickname" },
+        "ownerName": { "type": "string", "description": "Owner name on RC" },
+        "model": { "type": "string", "description": "Vehicle make and model" },
+        "registrationDate": { "type": "string", "description": "Date of registration" },
+        "rcValidity": { "type": "string", "description": "RC validity status" },
+        "insuranceValidity": { "type": "string", "description": "Insurance expiry date" },
+        "insuranceProvider": { "type": "string", "description": "Insurance policy issuer" },
+        "pucValidity": { "type": "string", "description": "Pollution Under Control expiry" },
+        "fastagTagId": { "type": "string", "description": "RFID FASTag barcode ID" },
+        "fastagBalance": { "type": "number", "description": "Current prepaid wallet balance in INR" },
+        "fastagBank": { "type": "string", "description": "Issuing bank for FASTag" },
+        "notes": { "type": "string", "description": "Optional citizen reminder notes" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["vehicleNumber", "vehicleType"]
+    },
+    "ApplicationTracker": {
+      "title": "ApplicationTracker",
+      "description": "Citizen application tracking entry with ARN and milestone timeline",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique tracker record ID" },
+        "serviceId": { "type": "string", "description": "Referenced e-service ID" },
+        "serviceTitle": { "type": "string", "description": "Title of applied government service" },
+        "applicationNumber": { "type": "string", "description": "Official ARN or acknowledgement number" },
+        "portalName": { "type": "string", "description": "Name of authorized government department" },
+        "appliedDate": { "type": "string", "description": "Application submission date" },
+        "status": { "type": "string", "enum": ["Submitted", "Under Verification", "Approved", "Action Required", "Dispatched"], "description": "Current milestone status" },
+        "appointmentDate": { "type": "string", "description": "Scheduled biometric or test appointment date" },
+        "appointmentLocation": { "type": "string", "description": "RTO or Seva Kendra address" },
+        "notes": { "type": "string", "description": "Citizen personal tracking remarks" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["serviceId", "serviceTitle", "applicationNumber", "status"]
+    },
+    "Checklist": {
+      "title": "Checklist",
+      "description": "Document verification checklist progress for a given service",
+      "type": "object",
+      "properties": {
+        "serviceId": { "type": "string", "description": "ID of service" },
+        "checkedDocs": { "type": "array", "description": "List of completed document names" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of update" }
+      },
+      "required": ["serviceId", "checkedDocs"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Citizen feedback, query or portal support submission",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique inquiry ticket ID" },
+        "name": { "type": "string", "description": "Citizen name" },
+        "email": { "type": "string", "description": "Contact email" },
+        "category": { "type": "string", "description": "Topic or service category" },
+        "message": { "type": "string", "description": "Feedback or query text" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" },
+        "status": { "type": "string", "description": "Resolution status" }
+      },
+      "required": ["name", "email", "message"]
+    },
+    "WomenBusCard": {
+      "title": "WomenBusCard",
+      "description": "Maharashtra Women Bus Concession Card application and digital pass under MSRTC Mahila Samman Scheme",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique application ref ID (e.g. WBC-2025-XXXXX)" },
+        "cardId": { "type": "string", "description": "Official MSRTC Card Number (e.g. MSRTC-WBC-MH-XXXXX)" },
+        "fullName": { "type": "string", "description": "Applicant full name" },
+        "dateOfBirth": { "type": "string", "description": "Date of birth" },
+        "age": { "type": "number", "description": "Age in years" },
+        "mobileNumber": { "type": "string", "description": "10-digit mobile number" },
+        "idProofType": { "type": "string", "description": "Document type used for verification" },
+        "idProofNumber": { "type": "string", "description": "Masked or verified document number" },
+        "photographUrl": { "type": "string", "description": "Digital passport photograph" },
+        "concessionType": { "type": "string", "description": "Concession category (50% or 100%)" },
+        "status": { "type": "string", "enum": ["Pending", "Approved", "Rejected", "Expired"], "description": "Application lifecycle status" },
+        "validFrom": { "type": "string", "description": "Pass validity start date" },
+        "validUntil": { "type": "string", "description": "Pass expiration date" },
+        "depotOffice": { "type": "string", "description": "Designated MSRTC Bus Depot" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["fullName", "mobileNumber", "concessionType", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Citizen profile, language preference, and bookmarks"
+    },
+    "/users/{userId}/vehicles/{vehicleId}": {
+      "schema": "Vehicle",
+      "description": "Saved vehicles with FASTag, RC and Challan records"
+    },
+    "/users/{userId}/womenBusCards/{cardId}": {
+      "schema": "WomenBusCard",
+      "description": "MSRTC Women Bus Concession digital cards and pass applications"
+    },
+    "/users/{userId}/applications/{applicationId}": {
+      "schema": "ApplicationTracker",
+      "description": "Government application tracking entries"
+    },
+    "/users/{userId}/checklists/{serviceId}": {
+      "schema": "Checklist",
+      "description": "Document checklist progress for a specific service"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Public citizen support inquiries and portal feedback"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Remix E-Services Hub India",
+  "description": "Comprehensive directory and informational guide for Indian government, banking, travel, utility, and vehicle RTO e-services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
